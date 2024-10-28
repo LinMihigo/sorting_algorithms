@@ -54,8 +54,16 @@ void lomuto_quick_sort(int *array, int low, int high, int size)
 
 		print_array(array, size);
 
-		lomuto_quick_sort(array, low, pi - 1, size);
-		low = pi + 1;
+		if (pi - low < high - pi)
+		{
+			lomuto_quick_sort(array, low, pi - 1, size);
+			low = pi + 1;
+		}
+		else
+		{
+			lomuto_quick_sort(array, pi + 1, high, size);
+			high = pi - 1;
+		}
 	}
 }
 
