@@ -8,54 +8,47 @@
  * @m: mid index
  * @r: right ending index
  */
-void merge(int *array, size_t left, size_t mid, size_t right)
+void merge(int array[], int l, int m, int r)
 {
-    size_t i, j, k;
-    size_t n1 = mid - left + 1;
-    size_t n2 = right - mid;
+	int i, j, k = l;
+	int l_size = m - l + 1;
+	int r_size = r - m;
+	int *l_arr = malloc(l_size * sizeof(int));
+	int *r_arr = malloc(r_size * sizeof(int));
 
-    int *L = malloc(n1 * sizeof(int));
-    int *R = malloc(n2 * sizeof(int));
+	if (!l_arr || !r_arr)
+		return;
 
-    if (L == NULL || R == NULL)
-    {
-        free(L);
-        free(R);
-        return;
-    }
+	for (i = 0; i < l_size; i++)
+		l_arr[i] = array[l + i];
+	for (j = 0; j < r_size; j++)
+		r_arr[j] = array[m + 1 + j];
 
-    for (i = 0; i < n1; i++)
-        L[i] = array[left + i];
-    for (j = 0; j < n2; j++)
-        R[j] = array[mid + 1 + j];
+	printf("Merging...\n[left]: ");
+	print_array(l_arr, l_size);
+	printf("[right]: ");
+	print_array(r_arr, r_size);
 
-    i = 0, j = 0, k = left;
+	i = 0, j = 0;
 
-    printf("Merging...\n");
-    printf("[left]: ");
-    print_array(L, n1);
-    printf("[right]: ");
-    print_array(R, n2);
+	while (i < l_size && j < r_size)
+	{
+		if (l_arr[i] <= r_arr[j])
+			array[k++] = l_arr[i++];
+		else
+			array[k++] = r_arr[j++];
+	}
 
-    while (i < n1 && j < n2)
-    {
-        if (L[i] <= R[j])
-            array[k++] = L[i++];
-        else
-            array[k++] = R[j++];
-    }
+	while (i < l_size)
+		array[k++] = l_arr[i++];
+	while (j < r_size)
+		array[k++] = r_arr[j++];
 
-    while (i < n1)
-        array[k++] = L[i++];
+	printf("[Done]: ");
+	print_array(array + l, r - l + 1);
 
-    while (j < n2)
-        array[k++] = R[j++]; 
-
-    printf("[Done]: ");
-    print_array(array + left, right - left + 1);
-
-    free(L);
-    free(R);
+	free(l_arr);
+	free(r_arr);
 }
 
 /**
